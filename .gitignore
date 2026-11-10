@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# secrets & local config
+.env
+.env.*
+!.env.example
+
+# outputs & real customer data - never commit these
+out/
+data/*
+!data/sample_tickets.csv
+*.log
+.DS_Store
+.idea/
+.vscode/

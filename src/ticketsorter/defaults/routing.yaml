@@ -1,0 +1,63 @@
+# Escalation signals. Category sets the baseline tier/priority; these rules escalate it.
+# Whole-word, case-insensitive matching. Priority: P1 (most urgent) .. P4.
+
+p1_keywords:
+  - production down
+  - production is down
+  - complete outage
+  - total outage
+  - all requests failing
+  - data breach
+  - security incident
+  - compromised
+  - leaked
+  - down for everyone
+
+p2_keywords:
+  - urgent
+  - asap
+  - blocking
+  - blocked
+  - critical
+  - deadline
+  - going live
+  - launch
+  - locked out
+  - sla
+
+# Technical depth that frontline (L1) usually cannot resolve => L2
+l2_keywords:
+  - stack trace
+  - traceback
+  - request id
+  - reproduce
+  - regression
+  - intermittent
+  - saml
+  - scim
+  - gdpr
+  - dpa
+  - soc 2
+  - hipaa
+  - vulnerability
+  - prompt injection
+  - hallucinating
+  - p99
+
+frustration_keywords:
+  - unacceptable
+  - furious
+  - terrible
+  - worst
+  - escalate
+  - switching to
+  - cancel our contract
+  - legal action
+  - chargeback
+
+# Customer plans that bump priority by one level
+priority_customer_tiers: [enterprise]
+
+reopen_escalation: 2          # reopened this many times => L2
+incident_cluster_size: 5      # this many similar tickets...
+incident_window_minutes: 60   # ...within this window => "possible incident"

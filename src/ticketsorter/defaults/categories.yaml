@@ -1,0 +1,107 @@
+# Support taxonomy for an AI / LLM API SaaS. Edit freely - no retraining needed.
+#   description : what the category means (used for semantic matching)
+#   keywords    : whole-word hits add a score bonus (great for error codes / product terms)
+#   examples    : optional real ticket snippets; each is matched separately (few-shot)
+#   default_tier: L1 (frontline) or L2 (engineering/specialist)
+#   base_priority: 1 (most urgent) .. 4
+#   incident_prone: many similar tickets in a short window => flag "possible incident"
+#   runbook: shown to agents on cluster summaries (link or one-liner)
+categories:
+  - name: outage_incident
+    description: Service is down or unavailable for everyone, complete outage, nothing works, status page
+    keywords: [outage, down, unavailable, "503", status page, "service unavailable", downtime, not responding]
+    default_tier: L2
+    base_priority: 1
+    incident_prone: true
+    runbook: "Check status page + on-call channel; link ticket to the active incident."
+
+  - name: api_errors
+    description: API requests failing with HTTP errors, 400 500 502 504, invalid request, timeouts, streaming disconnects, internal server error
+    keywords: ["500", "502", "504", "400", internal server error, bad gateway, timeout, timed out, invalid_request_error, sse, truncated]
+    default_tier: L2
+    base_priority: 2
+    incident_prone: true
+    runbook: "Ask for request ID, timestamp (UTC), endpoint, model, payload size; check gateway logs."
+
+  - name: rate_limits_quota
+    description: Rate limit exceeded 429, too many requests, tokens per minute, quota exhausted, concurrency limit, request a limit increase
+    keywords: ["429", rate limit, rate limits, quota, tpm, rpm, tokens per minute, concurrency, throttled, limit increase]
+    default_tier: L1
+    base_priority: 3
+    runbook: "Verify plan limits in admin console; follow the limit-increase process."
+
+  - name: latency_performance
+    description: Slow responses, high latency, time to first token, degraded throughput, slow dashboard or slow embeddings
+    keywords: [slow, latency, laggy, p99, "time to first token", throughput, slower, takes forever]
+    default_tier: L2
+    base_priority: 2
+    incident_prone: true
+    runbook: "Collect region, model, prompt size and before/after latency numbers."
+
+  - name: model_quality
+    description: Model output problems, hallucination, wrong or inaccurate answers, quality regression, refusals, invalid JSON output, inconsistent results, wrong language
+    keywords: [hallucinat, hallucinating, inaccurate, regression, refuses, refusing, refusal, invalid json, inconsistent, quality, wrong answer, wrong language]
+    default_tier: L2
+    base_priority: 3
+    runbook: "Collect prompt, model version, params and 2-3 bad outputs; route to applied-ML."
+
+  - name: billing_invoices
+    description: Billing questions, invoices, charges, refunds, duplicate payment, payment failed, subscription changes, pricing, plan upgrade or cancellation
+    keywords: [invoice, charged, charge, refund, billing, payment, subscription, credit card, vat, pricing, cancel subscription, receipt]
+    default_tier: L1
+    base_priority: 3
+    runbook: "Billing macros; refunds above policy threshold go to finance."
+
+  - name: account_access
+    description: Login problems, password reset, two-factor authentication, SSO or SAML configuration, locked account, inviting or removing team members
+    keywords: [login, log in, password, 2fa, mfa, sso, saml, okta, locked, invite, invitation, authenticator, locked out]
+    default_tier: L1
+    base_priority: 3
+    runbook: "Identity verification first; SSO/SAML issues escalate to L2."
+
+  - name: api_authentication
+    description: API keys, 401 unauthorized, 403 forbidden, revoked or rotated key, bearer token, scoped project keys, permissions
+    keywords: ["401", "403", api key, api keys, unauthorized, forbidden, revoked, rotate, bearer, permission denied, scoped]
+    default_tier: L1
+    base_priority: 2
+    runbook: "Never ask customers to paste full keys; check key status by prefix."
+
+  - name: integrations_sdk
+    description: SDK bugs, client libraries, Python or Node SDK errors, webhooks, LangChain, LlamaIndex, Zapier or Slack integration problems
+    keywords: [sdk, python sdk, node sdk, library, webhook, webhooks, langchain, llamaindex, zapier, integration, typeerror, upgrade, package, pip, npm]
+    default_tier: L2
+    base_priority: 3
+    runbook: "Get SDK + language versions and a minimal reproduction."
+
+  - name: fine_tuning_training
+    description: Fine-tuning jobs, training failures, dataset format validation, JSONL training files, custom model deployment, embeddings or vector uploads
+    keywords: [fine-tune, fine-tuning, finetune, finetuning, training, dataset, jsonl, epochs, checkpoint, custom model, training job]
+    default_tier: L2
+    base_priority: 3
+    runbook: "Collect job ID, dataset size and validation error; route to ML platform."
+
+  - name: data_privacy_security
+    description: Data privacy and security, GDPR, data retention, data deletion, DPA, SOC 2, compliance questionnaires, leaked credentials, vulnerabilities, prompt injection, training on customer data
+    keywords: [gdpr, dpa, soc 2, hipaa, retention, delete my data, data deletion, privacy, compliance, vulnerability, breach, leaked, pii, prompt injection, security questionnaire, opt out]
+    default_tier: L2
+    base_priority: 2
+    runbook: "Route to security/privacy team; potential breaches are P1 and page on-call."
+
+  - name: how_to_usage
+    description: How-to and usage questions, getting started, documentation, tutorials, prompt writing help, choosing a model, best practices
+    keywords: [how do i, how to, documentation, docs, tutorial, getting started, example, best practice, which model, guide, prompt engineering]
+    default_tier: L1
+    base_priority: 4
+    runbook: "Reply with docs link / macro; mark helpful articles."
+
+  - name: feature_requests
+    description: Feature requests, product suggestions, roadmap questions, asking for new capabilities or model support
+    keywords: [feature request, roadmap, would be great, please add, suggestion, support for, wish, planned]
+    default_tier: L1
+    base_priority: 4
+    runbook: "Log in product feedback tool and thank the customer."
+
+  - name: other
+    description: Anything that does not fit another category
+    default_tier: L1
+    base_priority: 4
